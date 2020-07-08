@@ -18,14 +18,25 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="text-capitalize font-weight-bold">efeezreztzet</td>
-            <td>
+          <tr v-for="formation in formations" :key="formation.id_formation">
+            <td class="text-capitalize font-weight-bold">{{formation.nomF}}</td>
+            <td v-if="formation.accessible==1">
+              <Inertia-link :href='`formation/${formation.nomF}/${formation.id_formation}`'>             
+              <v-btn
+                class="error lighten-5  error--text"
+                label
+                text-color="white"
+                >Voir formation
+              </v-btn>
+            </Inertia-link>
+            </td>
+            
+            <td v-if="formation.accessible==0">
               <v-chip
                 class="error lighten-5  error--text"
                 label
                 text-color="white"
-                >hhhhhhhhhhhh</v-chip
+                >Waiting for approval </v-chip
               >
             </td>
             
@@ -50,13 +61,17 @@
 
 <script>
 export default {
+  props:['formations'],
+  methods:{
+    
+  },
   computed: {
     
   },
 
   data() {
     return {
-      formations:{},
+    
       courses: [
         {
           name: "titre de formation",

@@ -6,7 +6,7 @@
       <v-container>
         <div class="d-flex align-center justify-space-between">
           <h1 class="white--text display-1">Shopping cart</h1>
-          <v-breadcrumbs dark :items="breadCrumbLinks" large></v-breadcrumbs>
+          
         </div>
       </v-container>
     </section>
@@ -25,15 +25,15 @@
               <v-row>
                 <v-col cols="2">
                   <v-img
-                    src="https://picsum.photos/510/300?random"
+                    :src='`/formations/${formation.thumbnail}`'
                     aspect-ratio="1.4"
                   ></v-img>
                 </v-col>
                 <v-col cols="6">
                   <h4 class="font-weight-medium">
-                    {{formation.id_formation}}.
+                    {{formation.nomF}}.
                   </h4>
-                  <span class="caption">par Lorem, ipsum dolor.</span>
+                  <span class="caption">par {{formation.nom}} {{formation.prenom}}.</span>
                 </v-col>
                 <v-col cols="2" class="" >
                   <v-btn text small class="text-capitalize" color="error" @click="remove(formation.id_formation)" >
@@ -49,6 +49,13 @@
                     >
                     {{formation.prix}} DZD
                   </h4>
+                  <!--<div v-if="$page.auth.user.type=='entreprise'"> -->
+                    <div class="grey lighten-2 rounded text-center">
+                      <v-btn small fad icon @click="formation.nbr_stagiaires--" :disabled="formation.nbr_stagiaires <= 1"><v-icon>mdi-minus</v-icon></v-btn>
+                      <span class="mx-4">{{formation.nbr_stagiaires}}</span>
+                      <v-btn small fad icon  @click="formation.nbr_stagiaires++" ><v-icon>mdi-plus</v-icon></v-btn>
+                    <!-- </div> -->
+                  </div>
                 </v-col>
               </v-row>
             </v-card>
@@ -56,7 +63,7 @@
           <v-col cols="12" md="4">
             <v-card class="pa-7" outlined>
               <h3 class="grey--text lighten-2">Total :</h3>
-              <h2 class="display-1 font-weight-bold my-5" >{{total}} DZD</h2>
+              <h2 class="display-1 font-weight-bold my-5" >{{totalAmount}} DZD</h2>
               
               <v-btn block color="secondary" v-on:click="checkout">checkout</v-btn>
             
@@ -82,9 +89,10 @@ export default {
             var sum = 0;
             if(this.formations != null) {
             this.formations.forEach(e => {
-                        sum += e.prix;
+                        sum += e.prix*e.nbr_stagiaires;
                     });
             }
+                    this.form.total = sum;
                     return sum
                 
       }
@@ -94,7 +102,7 @@ export default {
   },
   methods:{
     checkout(){
-      this.$inertia.visit(route('user.checkout'))
+      this.$inertia.post(route('user.checkout',this.form))
     },
     prix(){
     var sum = 0;
@@ -106,6 +114,7 @@ export default {
         this.totale = sum
   }
   },
+  
   remove(id){
       this.prix();
       this.$inertia.post(route('panier.remove',id));
@@ -117,13 +126,18 @@ export default {
 },
 data() {
     return {
+      nbr_stagiaires:1,
       totale:0,
       val:0,
+      form:{
+        formations:this.formations,
+        total:0
+      },
       breadCrumbLinks: [
         {
           text: "Accueil",
           disabled: false,
-          to: "/",
+          to: "home",
         },
 
         {

@@ -42,9 +42,14 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+    
     public function ShowLoginForm(){
+        session(['link' => url()->previous()]);
         return Inertia::render('Login');
             
-    
+    }
+    protected function authenticated(Request $request, $user)
+    {
+    return redirect(session('link'));
     }
 }

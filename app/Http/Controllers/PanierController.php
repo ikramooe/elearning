@@ -21,7 +21,8 @@ class PanierController extends Controller
     
     public function index(){
         $formations = Panier::where('user',Auth::user()->id)
-        ->join('formations','id_formation','paniers.cours')->select(array('paniers.prix','id_formation','nomF'))->get();
+        ->join('formations','id_formation','paniers.cours')
+        ->join('users','users.id','formations.id_formateur')->get();
         $total = Panier::where('user',Auth::user()->id)->sum('paniers.prix');
         return Inertia::render('ShoppingCart',[
             'formations'=>$formations,
@@ -40,10 +41,13 @@ class PanierController extends Controller
         return back()->with('success','formation added');
     }
 
-    public function checkout(){
-        $total = Panier::where('user',Auth::user()->id)->sum('paniers.prix');
+    public function checkout(Request $request){
+        //dd($request->all());
+        foreach($request->formations as $formation){
+            DB::table('Paniers')->where('cours',$formation['id_formation'])->update(['nbr_stagiaires'=>$formation['nbr_stagiaires']]);
+        }
         return Inertia::render('Checkout',[
-            "total"=>$total
+            "total"=>$request->total
         ]);
     }
 

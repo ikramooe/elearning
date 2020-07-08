@@ -20,7 +20,7 @@ class UsersController extends Controller
 
     public function formations(){
             $formations = DB::table('formation_client')->where('refcl',Auth::user()->id)
-            ->join('formations','formations.id_formation','formation_client.refform')->get();
+            ->join('formations','formations.id_formation','formation_client.refform')->get(['nomF','accessible','id_formation']);
             //dd($formations);
 
             return response()->json([
@@ -28,7 +28,7 @@ class UsersController extends Controller
             ]);
     
             
-        }
+    }
     
     
     public function update(Request $request){    
@@ -52,20 +52,16 @@ class UsersController extends Controller
             $image_path = public_path().'/upload/'.Auth::user()->image; 
             unlink($image_path); 
             }
-            $fileName = Auth::user()->id.'.'.$request['file']->getClientOriginalExtension();
+            //rename to time
+            $fileName = time().'.'.$request['file']->getClientOriginalExtension();
             $request['file']->move(public_path('upload'), $fileName);
-                  
+            //update the image       
             $user=User::where('id',Auth::user()->id)->update(["image"=>$fileName]);
-            //return redirect()->route('about');
+            
         
             }
-           
-            return Redirect::route('user.profile')->with('success','hahaha');
-        
-
-        //     
-        
-    
-        }
+            
+            return Redirect::route('user.profile');      
+         }
 
 }

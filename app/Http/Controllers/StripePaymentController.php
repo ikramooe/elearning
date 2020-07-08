@@ -29,14 +29,21 @@ class StripePaymentController extends Controller
                     'data3' => 'metadata 3',
                 ],
             ]);
-    
+            if($charge['status']=="succeeded"){
             // save this info to your database
             foreach($formations as $formation){
                 DB::table('formation_client')->insert(['refcl'=>$formation->user,'refform'=>$formation->cours,'nbr_stagiaires'=>$formation->nbr_stagiaires]);
-            }
-            Panier::where('user',Auth::user()->id)->delete();
+            }    
+                Panier::where('user',Auth::user()->id)->delete();
             // SUCCESSFUL
             return redirect()->route('user.profile')->with('successMessage','user was successfully added');
+            
+            }
+            else {
+                return redirect()->route('user.profile')->with('error','user was successfully added');
+            }
+
+            
         } catch (CardErrorException $e) {
             // save info to database for failed
             return back()->withErrors('Error! ' . $e->getMessage());

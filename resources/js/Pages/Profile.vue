@@ -22,101 +22,49 @@
                     >{{$page.auth.user.nom}} {{$page.auth.user.prenom}} </v-list-item-title
                   >
                   <v-list-item-subtitle
-                    >{{$page.auth.user.image}}</v-list-item-subtitle
+                    >{{$page.auth.user.type}}</v-list-item-subtitle
                   >
                 </v-list-item-content>
               </v-list-item>
             </v-list>
             <v-divider></v-divider>
-          </v-col>
-            <v-tabs vertical
-                
-            >
-                          <v-tab >
-              Option
+            <v-tabs v-model="window" vertical class="pl-0 text-left">
+              <v-tab
+                v-for="(item, i) in items"
+                :key="i"
+                class="pl-5  justify-start text-body-2 text-capitalize"
+              >
+                <v-icon left class="mr-4">{{ item.icon }}</v-icon>
+                {{ item.text }}
               </v-tab>
-              <v-tab>
-              Another Selection
-              </v-tab>
-              <v-tab>
-              Items
-              </v-tab>
-              <v-tab>
-              Another Screen
-              </v-tab>
-           <v-tab-item>
-             <div>
-    <v-card class="pa-10 text-center mb-7">
-      <h2>Profile d'utilisateur</h2>
-      <p class="subheding mb-0">Ajoutez des informations vous concernant</p>
-    </v-card>
-    <v-card class="pa-10">
-      <v-form enctype="multipart/form-data">
-        
-        <v-row dense>
-          
-          <v-col cols="12">
-            <v-text-field 
-              
-              outlined
-              label="Nom Entreprise"
-            ></v-text-field>
-
-            <v-text-field
-              
-              outlined
-              label="Nom"
-            ></v-text-field>
-            <v-text-field
-              
-              
-              outlined
-              label="Prénom"
-            ></v-text-field>
-            <v-text-field
-              
-              
-              outlined
-              label="Téléphone"
-            ></v-text-field>
-            <v-text-field
-              
-              
-              outlined
-              label="Email"
-            ></v-text-field>
-            <v-text-field
-              
-        
-              outlined
-              label="Date Naissance"
-            ></v-text-field>
-
-          </v-col>
-          <v-col cols="12">
-            <v-file-input
-              
-              outlined
-              
-              accept="image/*"
-              placeholder="Changer la photo de profile"
-              prepend-icon="mdi-camera"
-              
-              id="loadpicture"
-              type="file"
-            ></v-file-input>
-          </v-col>
-        </v-row>
-        <v-btn type="submit" color="secondary" 
-          >enregister <v-icon right>mdi-content-save-outline</v-icon></v-btn
-        >
-      </v-form>
-    </v-card>
-  </div>
- 
-           </v-tab-item>    
             </v-tabs>
-        </v-row>
+            </v-col>
+          <v-col cols="12" md="9">
+            <v-tabs-items v-model="window">
+              <v-tab-item>
+                <UserProfile />
+              </v-tab-item>
+              <v-tab-item>
+                <Courses v-bind:formations="formations" />
+              </v-tab-item>
+              <v-tab-item>
+                <PurshaseHistory />
+              </v-tab-item>
+              <v-tab-item>
+                <PurshaseHistory />
+              </v-tab-item>
+              <v-tab-item>
+                <PurshaseHistory />
+              </v-tab-item>
+
+              <v-tab-item>
+                <ProfileSettings />
+              </v-tab-item>
+            </v-tabs-items>
+          </v-col>
+
+            
+          </v-row>
       </v-container>
     </section>
     <AppFooter />
@@ -127,6 +75,9 @@
 <script>
 import Navbar from "../components/globals/Navbar";
 import AppFooter from "../components/globals/AppFooter";
+import UserProfile from "../components/profile/UserProfile";
+import Courses from "../components/profile/Courses";
+import ProfileSettings from "../components/profile/ProfileSettings";
 
 export default {
 
@@ -138,15 +89,15 @@ mounted(){
       })
 },  
 data: () => ({
+    window: null,
     formations:{},
     activatedTab: null,
     item: 0,
-    
-    
+
     items: [
       { text: "Profile",
-       icon: "mdi-account-outline", 
-       path: "details" },
+        icon: "mdi-account-outline", 
+        path: "details" },
       {
         text: "Mes Formations",
         icon: "mdi-format-list-bulleted-square",
@@ -173,19 +124,22 @@ data: () => ({
   }),
   components: {
     Navbar,
-    AppFooter
+    AppFooter,
+    UserProfile,
+    Courses,
+    ProfileSettings
   }, 
-  updated() {
-  if (this.$page.Message.success) {
-    this.$toast.open({
-        message: "updated successfully",
-        type: "success",
-        duration: 9000,
-        dismissible: true,
-        position:"top"
-      })
-  }
-},
+  //updated() {
+  //if (this.$page.Message.success) {
+  //  this.$toast.open({
+  //      message: "updated successfully",
+  //      type: "success",
+  //      duration: 9000,
+  //      dismissible: true,
+  //      position:"top"
+  //    })
+  //}
+//},
   methods: {
         EditUser(){
           return this.$inertia.post(route("user.edit",this.form))

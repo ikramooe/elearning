@@ -49,8 +49,8 @@
 export default {
   data() {
     return {
-      email: "init@company.fr",
-
+      email: this.$page.auth.user.email,
+      
       password: "",
       passwordConfirm :"",
       remember: false,

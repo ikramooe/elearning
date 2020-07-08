@@ -37,6 +37,12 @@
           </v-list-item>
         </v-list>
       </v-menu>
+      <inertia-link href="/feed">
+      <v-btn class="text-capitalize hidden-md-and-down" text>
+        feed
+        <v-icon right>mdi-comment-quote-outline</v-icon>
+      </v-btn>
+      </inertia-link>
       <v-text-field
         dense
         class="ml-10"

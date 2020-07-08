@@ -17,10 +17,14 @@ class CreateFormationClient extends Migration
             $table->bigIncrements('id_formc');
             $table->unsignedbigInteger('refcl');
             $table->unsignedbigInteger('refform');
+
             $table->foreign('refcl')->references('id')->on('users');
             $table->foreign('refform')->references('id_formation')->on('formations');
             $table->bigInteger('nbr_stagiaires')->nullable()->default(0);
+            
             $table->string('contrat')->nullable()->default(0);
+            $table->string('paiement')->nullable()->default("carte de credit");
+            $table->string('accessible')->default(0);
             $table->timestamps();
         });
     }

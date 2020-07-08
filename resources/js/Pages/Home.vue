@@ -1,7 +1,14 @@
 <template>
   <v-app>
   <div>
-    <Navbar />
+    <div v-if="$page.auth.user==null">
+    <Navbarnonauth />
+    </div>
+    <div v-else>
+      <Navbar />
+    </div>
+  
+    
     <!-- Hero section start -->
     <section class="hero">
       <v-container class="h-100">
@@ -10,8 +17,7 @@
           <v-col cols="12" md="6">
             <v-card>
               <v-card-title>
-                
-                <h3></h3>
+                <h3>HOLA como estas </h3>
               </v-card-title>
               <v-card-text>
                 Lorem ipsum dolor sit amet consectetur adipisicing laborum
@@ -62,17 +68,7 @@
       </v-container>
     </section>
     <!-- Recent courses section end -->
-    <!-- Feeds section start -->
-    <section class="py-4">
-      <v-container>
-        <h2 class="text-uppercase display-1 font-weight-bold">FEED</h2>
 
-        <div>
-          <PostCard />
-        </div>
-      </v-container>
-    </section>
-    <!-- Feeds section end -->
 
     <!-- Our courses  section start -->
     <section class="py-4">
@@ -87,8 +83,11 @@
 
         <div>
           <h3 class="mb-3">Nos Formation online</h3>
-          <swiper ref="mySwiperCourse" :options="swiperOptionsCourse" v-for="formation in enligne" :key="formation.id_formation">
-            <swiper-slide> <CourseCard  v-bind="{titre:formation.nomF,type:formation.type , id:formation.id_formation}"/></swiper-slide>
+          <swiper ref="mySwiperCourse" :options="swiperOptionsCourse">
+            <swiper-slide v-for="formation in enligne" :key="formation.id_formation"> 
+              <CourseCard v-bind="{titre:formation.nomF,type:formation.type , id:formation.id_formation,thumbnail:formation.thumbnail}" />
+            </swiper-slide>    
+
             <v-btn
               class="mx-2 swiper-button-prev"
               slot="button-prev"
@@ -110,8 +109,10 @@
 
         <div class="mt-8">
           <h3 class="mb-3">Nos Formation Présentiels</h3>
-          <swiper ref="mySwiperCourse" :options="swiperOptionsCourse" v-for="formation in press" :key="formation.id_formation">
-            <swiper-slide> <CourseCard v-bind="{titre:formation.nomF,type:formation.type , id:formation.id_formation}" /></swiper-slide>
+          <swiper ref="mySwiperCourse" :options="swiperOptionsCourse">
+            <swiper-slide v-for="formation in press" :key="formation.id_formation"> 
+              <CourseCard  v-bind="{titre:formation.nomF,type:formation.type , id:formation.id_formation,thumbnail:formation.thumbnail}"/>
+            </swiper-slide>            
             <v-btn
               class="mx-2 swiper-button-prev"
               slot="button-prev"
@@ -161,19 +162,19 @@ import { Swiper, SwiperSlide, directive } from "vue-awesome-swiper";
 import "swiper/css/swiper.css";
 //GLOBALS
 import Navbar from "../components/globals/Navbar";
+import Navbarnonauth from "../components/globals/Navbarnonauth";
 import AppFooter from "../components/globals/AppFooter";
 //
 import Rcc from "../components/rcc";
-import PostCard from "../components/Postcard";
+
 import CourseCard from "../components/CourseCard";
 import CategoryCard from "../components/CategoryCard";
 
 export default {
   name: "Home",
-  props: ['enligne','panier','press'],
+  props:['press','enligne'],
   data() {
     return {
-      
       swiperOptions: {
         slidesPerView: 2,
 
@@ -182,26 +183,26 @@ export default {
         loop: false,
         navigation: {
           nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
+          prevEl: ".swiper-button-prev"
         },
         breakpoints: {
           1024: {
             slidesPerView: 2,
-            spaceBetween: 40,
+            spaceBetween: 40
           },
           768: {
             slidesPerView: 2,
-            spaceBetween: 30,
+            spaceBetween: 30
           },
           640: {
             slidesPerView: 1,
-            spaceBetween: 20,
+            spaceBetween: 20
           },
           320: {
             slidesPerView: 1,
-            spaceBetween: 10,
-          },
-        },
+            spaceBetween: 10
+          }
+        }
       },
       swiperOptionsCourse: {
         slidesPerView: 3,
@@ -211,27 +212,27 @@ export default {
         loop: false,
         navigation: {
           nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
+          prevEl: ".swiper-button-prev"
         },
         breakpoints: {
           1024: {
             slidesPerView: 3,
-            spaceBetween: 40,
+            spaceBetween: 40
           },
           768: {
             slidesPerView: 2,
-            spaceBetween: 30,
+            spaceBetween: 30
           },
           640: {
             slidesPerView: 2,
-            spaceBetween: 20,
+            spaceBetween: 20
           },
           320: {
             slidesPerView: 1,
-            spaceBetween: 10,
-          },
-        },
-      },
+            spaceBetween: 10
+          }
+        }
+      }
     };
   },
 
@@ -239,22 +240,22 @@ export default {
     Navbar,
     AppFooter,
     Rcc,
-    PostCard,
     CourseCard,
     CategoryCard,
     Swiper,
     SwiperSlide,
+    Navbarnonauth
   },
   directives: {
-    swiper: directive,
-  },
+    swiper: directive
+  }
 };
 </script>
 
 <style lang="scss">
 .hero {
   height: 400px;
-  background-image: url("/elearning/public/images/slide1.jpg");
+  background-image: url("/elearnfinal/public/images/slide1.jpg");
   background-size: cover;
 }
 .h-100 {

@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+<v-app>
   <div id="inspire">
     <v-navigation-drawer width="400" v-model="drawerRight" app clipped right>
       <v-list class="py-0">
@@ -204,12 +204,10 @@
       </div>
     </div>
   </div>
-  </v-app>
+</v-app>
 </template>
 
 <script>
-import pdf from "vue-pdf";
-
 //GLOBALS
 import Navbar from "../components/globals/Navbar";
 import AppFooter from "../components/globals/AppFooter";
@@ -253,17 +251,6 @@ export default {
           }
         ]
       }
-    ],
-
-    vidoes: [
-      ["Soolking feat Ouled El Bahdja Liberté", 324158031],
-      ["Soolking Rockstar", 320477018]
-    ],
-    cruds: [
-      ["Create", "add"],
-      ["Read", "insert_drive_file"],
-      ["Update", "update"],
-      ["Delete", "delete"]
     ]
   })
 };

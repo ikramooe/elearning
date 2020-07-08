@@ -12,7 +12,9 @@
             <h1 class="font-weight-bold primary--text">Inscription</h1>
             <div class="subheading">
               Vous avez déjà un compte?
+              <Inertia-link href="/login">
               <span class="secondary--text font-weight-bold">se connecter</span>
+              </Inertia-link>
             </div>
           </div>
           <v-form class="w-75 mx-auto mt-10" method="POST" @submit.prevent="CreateUser">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 use Inertia\Inertia;
+use Closure;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
@@ -12,7 +13,28 @@ class Authenticate extends Middleware
      *
      * @param  \Illuminate\Http\Request  $request
      * @return string|null
+     *
      */
+
+    public function handle($request, Closure $next)
+    {
+        if ( ! $this->auth->user() ) {
+            return redirect('login');
+            //abort(404, '', ['Location' => 'http://www.google.com']);
+        }
+
+        return $next($request);
+    }
+    
+
+
+
+
+
+
+
+
+/*
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
@@ -21,4 +43,5 @@ class Authenticate extends Middleware
             ]);
         }
     }
+*/
 }

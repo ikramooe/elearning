@@ -1,5 +1,6 @@
 <template>
-  <div>
+<v-app>
+  <div id="app">
     <v-container>
       <v-row>
         <v-col cols="12" md="4">
@@ -28,8 +29,66 @@
             </v-row>
           </v-card>
         </v-col>
+        <v-col cols="12" md="4">
+          <v-card class="pa-3" flat outlined color="purple lighten-5">
+            <v-row>
+              <v-col cols="4">
+                <v-icon size="80">mdi-account-star-outline</v-icon>
+              </v-col>
+              <v-col cols="8">
+                <h3 class=" font-weight-medium">Admins</h3>
+                <h2 class=" font-weight-medium">4</h2>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
       </v-row>
     </v-container>
+
+    <section class="actions-section">
+      <v-container>
+        <v-row>
+          <v-col cols="12" md="4">
+            <div class="action-card">
+              <h2 class="font-weight-medium">Ajouter une formation</h2>
+              <p class="caption">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam
+                consequatur voluptas, illo vel culpa accusamus?
+              </p>
+              <v-btn color="secondary" router-link to="/add" >
+                <v-icon left>mdi-plus</v-icon> Ajouter
+              </v-btn>
+              
+            </div>
+          </v-col>
+          <v-col cols="12" md="4">
+            <div class="action-card">
+              <h2 class="font-weight-medium">Ajouter un message</h2>
+              <p class="caption">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam
+                consequatur voluptas, illo vel culpa accusamus? Lorem ipsum
+                dolor sit amet consectetur.
+              </p>
+              <v-btn color="secondary">
+                <v-icon left>mdi-plus</v-icon> Ajouter
+              </v-btn>
+            </div>
+          </v-col>
+          <v-col cols="12" md="4">
+            <div class="action-card">
+              <h2 class="font-weight-medium">Ajouter un Admin</h2>
+              <p class="caption">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Totam
+                consequatur voluptas, ?
+              </p>
+              <v-btn color="secondary">
+                <v-icon left>mdi-plus</v-icon> Ajouter
+              </v-btn>
+            </div>
+          </v-col>
+        </v-row>
+      </v-container>
+    </section>
 
     <section class="requestes-section">
       <v-container>
@@ -38,22 +97,46 @@
           <template v-slot:default>
             <thead>
               <tr>
-                <th class="text-left">Nom et Prénom</th>
+                <th class="text-left">Client</th>
+                <th class="text-left">Contact</th>
+                <th class="text-left">Type</th>
+                <th class="text-left">Formation</th>
+                <th class="text-left">stagiaires</th>
                 <th class="text-left">Contrat</th>
+                <th class="text-left">Total</th>
+                <th class="text-left">preuve de paiement</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="account in accounts" :key="account.name">
-                <td>{{ account.first_name + " " + account.last_name }}</td>
-
+              <tr v-for="request in requests" :key="request.id_formc">
+                <td>{{request.nom}} {{request.prenom}}</td>
+                <td>{{request.email}} <br>
+                     {{request.tel}}
+                </td>
+                <td v-if="request.role=='entreprise'">
+                  {{request.role}} <br>
+                  Entreprise : {{request.nomENT}}
+                </td>
+                <td v-if="request.role=='personne'">
+                  Particulier 
+                </td>
+                
+                <td>{{request.nomF}}</td>
+                <td>{{request.nbr_stagiaires}}</td>
                 <td>
                   <v-btn small class="pl-0" text color="success">
-                    Télécharger le contrat
+                    voir le contrat
                   </v-btn>
                 </td>
-
+                <td v-if="request.role=='entreprise'">
+                {{request.prix * request.nbr_stagiaires }}
+                </td>
+                <td v-if="request.role=='personne'">
+                {{request.prix}}
+                </td>
+                <td>{{request.paiement}}</td>
                 <td>
-                  <v-btn small color="success">
+                  <v-btn small color="success" v-on:click="approve(request.id_formc)">
                     accepter
                   </v-btn>
                 </td>
@@ -69,11 +152,19 @@
       </v-container>
     </section>
   </div>
+</v-app>
 </template>
 <script>
 import Bar from "../charts/Bar";
 import Pie from "../charts/Pie";
 export default {
+  props:['requests'],
+  methods:{
+    approve(id){
+      console.log(id);
+      this.$inertia.post(route('formation.approve',id))
+    }
+  },
   data() {
     return {
       dense: false,

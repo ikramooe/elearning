@@ -8,9 +8,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 class User extends Authenticatable
 {
-    use Notifiable;
+    
 
-
+    public $timestamps = true;
     /**
      * The attributes that are mass assignable.
      *

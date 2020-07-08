@@ -13,7 +13,9 @@
               <h1 class="font-weight-bold primary--text">Se connecter</h1>
               <div class="subheading">
                 Vous n'avez pas de compte?
+                <Inertia-link href="/register">
                 <span class="secondary--text font-weight-bold">s'inscrire</span>
+                </Inertia-link>
               </div>
             </div>
             <v-form class="w-75 mx-auto mt-10" @submit.prevent="LogUser">

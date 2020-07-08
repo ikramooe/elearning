@@ -22,7 +22,7 @@
             <v-img
               height="150"
               aspect-ratio="1.1"
-              :src="'images/slide3.jpg'"
+              :src='`/formations/${details[0].thumbnail}`'
             ></v-img>
           </v-col>
         </v-row>
@@ -118,6 +118,7 @@ export default {
     addpanier(){
     
       this.$inertia.post(route('paniertest',this.info));
+      if(this.info.user != null){
       this.$toast.open({
         message: "added successfully",
         type: "success",
@@ -127,7 +128,7 @@ export default {
       })
 
       this.$refs.Navbar.change();
-
+      }
     }  
     },
   props:['details','formations'],
